@@ -3,21 +3,22 @@
 
 int main() {
 
-    std::vector<std::vector<int>> v(10, std::vector<int>(10));
+    using namespace std;
+
+    cout << "111111";
+
+    vector<int> v;
+
+    void print_vector;
+    print_vector = [&]() {
+        for (char c: v)
+            std::cout << c << ' ';
+        std::cout << '\n';
+    };
 
     for (auto & i : v)
         for (auto j = 0; j < i.size(); j++)
             i[j] = j;
-
-
-    for (auto & i : v) {
-        for (auto j = 0; j < i.size(); j++) {
-            i[j] = j;
-            std::cout << i[j] << " ";
-        }
-
-        std::cout << std::endl;
-    }
 
     return 0;
 }
