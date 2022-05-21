@@ -3,6 +3,8 @@
 
 int main() {
 
+    cout <<3333333;
+
     std::vector<std::vector<int>> v(10, std::vector<int>(10));
 
     for (auto & i : v)
