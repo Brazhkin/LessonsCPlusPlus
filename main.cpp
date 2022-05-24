@@ -9,6 +9,8 @@ int main() {
 
     vector<int> v;
 
+    cout << "Регистрация первого ключа !" << endl;
+    
     void print_vector;
     print_vector = [&]() {
         for (char c: v)
