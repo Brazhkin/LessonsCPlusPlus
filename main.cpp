@@ -1,24 +1,27 @@
-#include <iostream>
-#include "vector"
+#include <bits/stdc++.h>
+using namespace std;
 
-int main() {
+int main()
+{
+    vector<int> v1;
 
-    using namespace std;
+    int a[] = { 1, 2, 3 };
 
-    cout << "111111";
+    // assign first 2 values
+    v1.assign(a, a + 2);
 
-    vector<int> v;
+    cout << "Elements of vector1 are\n";
 
-    void print_vector;
-    print_vector = [&]() {
-        for (char c: v)
-            std::cout << c << ' ';
-        std::cout << '\n';
-    };
+    for (auto & i : v1) cout << i << " ";
 
-    for (auto & i : v)
-        for (auto j = 0; j < i.size(); j++)
-            i[j] = j;
+    vector<int> v2;
+
+    // assign first 3 values
+    v2.assign(a, a + 3);
+
+    cout << "\nElements of vector2 are\n";
+
+    for (auto & i : v2) cout << i << " ";
 
     return 0;
 }
