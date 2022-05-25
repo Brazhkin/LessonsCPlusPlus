@@ -1,26 +1,22 @@
+#include <vector>
 #include <iostream>
-#include "vector"
+#include <algorithm>
 
-int main() {
+using namespace std;
 
-    using namespace std;
+struct print
+{
+    void operator()(int element)
+    {
+        cout << element << endl;
+    }
+};
 
-    cout << "111111";
+int main(void)
+{
+    std::vector<int> v = {1, 2, 3, 4, 5};
 
-    vector<int> v;
-
-    cout << "Регистрация первого ключа !" << endl;
-    
-    void print_vector;
-    print_vector = [&]() {
-        for (char c: v)
-            std::cout << c << ' ';
-        std::cout << '\n';
-    };
-
-    for (auto & i : v)
-        for (auto j = 0; j < i.size(); j++)
-            i[j] = j;
+    std::for_each(v.begin(), v.end(), print());
 
     return 0;
 }
