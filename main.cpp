@@ -1,156 +1,90 @@
 #include <vector>
-#include <chrono>
+#include <list>
 #include <iostream>
 
-using namespace std::chrono;
+using namespace std;
+
+bool IsOdd(int i) { return ((i % 2) == 1); }
 
 int main()
 {
-    std::vector<int> v(10), v1(10), v2;
+    using namespace std;
 
-    for (int i = 0; i < v.size(); i++) { v[i] = i; v1[i] = i; std::cout << i << " "; } std::cout << std::endl;
+    vector<int> v,v2; // вектор
+    list<int> l, l2; // список
 
-    v.assign(v.size(), 7); // Инициализация вектора v
+    l.push_back(1); // Добавит элемент вектора в конец
+    v.push_back(1); // Добавит элемент вектора в конец
 
-    for (auto & i : v) std::cout << i << " "; std::cout << std::endl;
+    l.push_front(2); // Добавить элемент в начало списка
+    v.front(); // возвращает первый элемент в векторе
 
-    v.assign(v1.begin(), v1.begin() + 3); // Инициализация вектора v и указание ему нового размера
+    l.pop_front(); // Удалить элемент из начала списка
+    l.pop_back(); // Удалить элемент из конца списка
 
-    for (auto & i : v) std::cout << i << " "; std::cout << std::endl;
+    v.clear(); // удаляет все элементы в векторе
+    l.clear(); // удаляет все элементы списка
 
-    std::cout << "Размер вектора v1 = " << v1.size() << std::endl;
+    l.insert(l.begin(), 5, 3); // добавляет элементы 3 в количестве 5 в начало списка
+    l.insert(l.begin(), l2.begin(), l2.end()); // добавляет все элементы списка l2 в начало списка l
+    l.insert(l.cend(), {10, 20, 30}); // добавляет указанные элементы в конец списка
 
-    v2.assign({9, 8, 7, 6}); // Инициализация безразмерного вектора v2 !
+    v.insert(v.cbegin(), 5, 3); // добавляет элементы 3 в количестве 5 в начало вектора
+    v.insert(v.begin(), v.begin(), v2.end()); // вставляет элементы с указанной позиции
+    v.insert(v.cend(), {10, 20, 30}); // добавляет указанные элементы в конец списка
 
-    v.assign({9, 8, 7, 6, 5, 4, 3});
+    v.assign({9, 8, 7, 6, 5, 4, 3}); // Инициализация вектора значениями
+    v.assign(v.size(), 7); // Инициализация вектора в количестве и значениями
+    l.assign(10, 10); // Инициализация списка в количестве и значениями
 
-    std::cout << "Размер вектора v = " << v.size() << std::endl;
+    v.capacity(); // Ёмкость вектора
 
-    std::cout << "Размер вектора v2 = " << v2.size() << std::endl;
+    l.emplace_back(5); // добавляет значение 5 в конец списка
+    v.emplace_back(5); // добавляет значение 5 в конец списка
 
-    v1.assign({67, 68, 69});
+    v.emplace(v.cbegin(), 7); // вставляет элемент 7 в начало списка
+    l.emplace(l.cbegin(), 6);  // вставляет элемент 6 в начало списка
 
-    std::cout << "Размер вектора v1 = " << v1.size() << std::endl;
+    l.emplace_front(3); // добавляет значение 3 в начало списка
 
-    v1.push_back(5); // Добавит элемент вектора в конец
+    v.erase(v.cbegin(), v.cend()); // Удаляет элементы массива в заданном диапазоне вектора
+    l.erase(l.cbegin(), l.cend()); // Удаляет элементы массива в заданном диапазоне списка
 
-    std::cout << "Размер вектора v1 = " << v1.size() << std::endl;
+    v.data(); // указатель на первый элемент вектора
 
-    std::cout << "Последний элемент вектора v1 = " << v1.back() << std::endl;
+    v.erase(v.cbegin()); // удалить элемент вначале вектора
+    l.erase(l.cbegin()); // удалить элемент вначале списка
 
-    std::cout << "Первый элемент вектора v1 = " << v1.front() << std::endl; // Возвращает первый элемент в векторе
+    l.size(); // размер списка
+    v.size(); // размер вектора
 
-    // begin() работает в связке, например, с end() !
-    // cbegin - константный итератор
-    for (auto i = v1.begin(); i != v1.end(); i++) std::cout << *i << " "; std::cout << std::endl;
+    l.reverse(); // развернет список задом наперёд
 
-    std::vector<int> v3(1);
+    v.swap(v2); // копирует содержимое одного вектора в другой
+    l.swap((l2)); // копирует содержимое одного списка в другой
 
-    std::cout << "Ёмкость вектора v3 (capacity) = " << v3.capacity() << std::endl;
+    v.resize(2); // меняет размер
+    l.resize(2); // меняет размер
+    l.resize(10, 4); // меняет размер списка и, если размер превышает значение, /
+    // инциализирует всё 4
+    v.resize(10, 4); // меняет размер вектора и, если размер превышает значение, /
+    // инциализирует всё 4
 
-    for (auto i = v1.begin(); i != v1.end(); i++) std::cout << *i << " "; std::cout << std::endl;
+    v.reserve(10); // Резервирует память для вектора
 
-    v3.push_back(4);
+    v.shrink_to_fit(); // режет емкость до текущего размера вектора
 
-    std::cout << "Ёмкость вектора v3 (capacity) = " << v3.capacity() << std::endl;
+    l.sort(); // сортирует элементы списка по возрастанию
 
-    auto ndec = v1.cend(); // Возвращает указатель \n
+    l.merge(l2); // сливает два списка в один, сортируя элементы по возрастанию
 
-    // crbegin() <-> crend() - указатели в обратном порядке !
-    for (auto i = v1.crbegin(); i != v1.crend(); i++) std::cout << *i << " "; std::cout << std::endl;
+    l.remove(10); // удаляет из списка элементы, значения которых равны 10
 
-    v1.clear(); // удаляет все элементы в векторе v1
+    l.remove_if(IsOdd); // удаляет элементы по условию в функции IsOdd
 
-    std::vector<int> v4 = {11, 12, 13, 14, 15};
+    l.unique(); // удаляет все повторяющиеся элементы в отсортированном списке
 
-    v4.erase(v4.cbegin(), v4.cbegin() + 1); // Удаляет элементы массива в заданном диапазоне
-
-    // crbegin() <-> crend() - указатели в обратном порядке !
-    for (auto i = v4.cbegin(); i != v4.cend(); i++) std::cout << *i << " "; std::cout << std::endl;
-
-    std::cout << "Размер вектора v1 = " << v4.size() << std::endl;
-
-    int *p = v4.data(); std::cout << *p << std::endl; // Возвращает указатель на первый элемент
-
-    std::vector<int> v5; if (v5.empty()) std::cout << "Пустой !" << std::endl;
-
-    v5.swap(v4); // v5 = v4 : копирует содержимое одного вектора в другой
-
-    // crbegin() <-> crend() - указатели в обратном порядке !
-    for (auto i = v5.cbegin(); i != v5.cend(); i++) std::cout << *i << " "; std::cout << std::endl;
-
-    v5.resize(3); // Устанавливает новый размер вектора
-
-    // crbegin() <-> crend() - указатели в обратном порядке !
-    for (auto i = v5.cbegin(); i != v5.cend(); i++) std::cout << *i << " "; std::cout << std::endl;
-
-    v5.resize(8, 1); // Устанавливает новый размер вектора (если больше увеличивает значения)
-
-    // crbegin() <-> crend() - указатели в обратном порядке !
-    for (auto i = v5.cbegin(); i != v5.cend(); i++) std::cout << *i << " "; std::cout << std::endl;
-
-    std::vector<int> v6;
-
-    std::cout << "Размер вектора v6 = " << v6.size() << std::endl;
-
-    v6.reserve(1); // Резервирует память (это необходимо т.к. увеличивает скорость обращения к элементам вектора !)
-
-    std::cout << "Размер вектора v6 = " << v6.size() << std::endl;
-    std::cout << "Ёмкость вектора v6 (capacity) = " << v6.capacity() << std::endl;
-
-    v6.push_back(1);
-    v6.push_back(1);
-    v6.push_back(1);
-
-    std::cout << "Размер вектора v6 = " << v6.size() << std::endl;
-    std::cout << "Ёмкость вектора v6 (capacity) = " << v6.capacity() << std::endl;
-
-    v6.emplace(v6.cbegin() + 2, 22);
-
-    // crbegin() <-> crend() - указатели в обратном порядке !
-    for (auto i = v6.cbegin(); i != v6.cend(); i++) std::cout << *i << " "; std::cout << std::endl;
-
-     auto start = high_resolution_clock::now();
-
-    v6.insert(v6.cbegin(), 5);
-
-    auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<nanoseconds>(stop - start);
-
-    std::cout << "Method I took " << duration.count() << " microseconds\n";
-
-    // crbegin() <-> crend() - указатели в обратном порядке !
-    for (auto i = v6.cbegin(); i != v6.cend(); i++) std::cout << *i << " "; std::cout << std::endl;
-
-    v.resize(10);
-
-    std::vector<int> v7 = {1, 2, 3, 4, 5, 6, 7,};
-
-    std::cout << v7.max_size() << std::endl;
-
-    for (int i = 0; i < v.size(); i++) v[i] = i;
-
-    // crbegin() <-> crend() - указатели в обратном порядке !
-    for (auto i = v.cbegin(); i != v.cend(); i++) std::cout << *i << " "; std::cout << std::endl;
-
-    v.insert(v.begin() + 4, v7.begin(), v7.end()); // вставляет элементы с указанной позиции
-
-    // crbegin() <-> crend() - указатели в обратном порядке !
-    for (auto i = v.cbegin(); i != v.cend(); i++) std::cout << *i << " "; std::cout << std::endl;
-
-    std::cout << v7.size() << std::endl;
-
-    for (auto i : v7) std::cout << i << " "; std::cout << std::endl;
-
-    v7.push_back(8);
-
-    for (auto i : v7) std::cout << i << " "; std::cout << std::endl;
-
-    std::cout << v7.capacity() << std::endl;
-
-    v7.shrink_to_fit();
-
-    std::cout << v7.capacity() << std::endl; // Сокращает емкость вектора до размера этого вектора
+    l.splice(l.begin(), l2); // вставляет элементы списка l2 в начало списка l
 
     return 0;
 }
