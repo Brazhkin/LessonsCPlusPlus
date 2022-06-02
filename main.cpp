@@ -1,60 +1,43 @@
 #include <iostream>
-#include <vector>
-#include <string>
-#include <algorithm>
-using namespace std;
 
-class Box {
-public:
-    Box() { std::cout << "default" << std::endl; }
-    Box(int width, int height, int length)
-            : m_width(width), m_height(height), m_length(length)
-    {
-        std::cout << "int,int,int" << std::endl;
-    }
-    Box(Box& other)
-            : m_width(other.m_width), m_height(other.m_height), m_length(other.m_length)
-    {
-        std::cout << "copy" << std::endl;
-    }
-    [[nodiscard]] Box(Box&& other) noexcept : m_width(other.m_width), m_height(other.m_height), m_length(other.m_length)
-    {
-        m_contents = std::move(other.m_contents);
-        std::cout << "move" << std::endl;
-    }
-    [[nodiscard]] int Volume() const { return m_width * m_height * m_length; }
-    void Add_Item(const string& item) { m_contents.push_back(item); }
-    void Print_Contents()
-    {
-        for (const auto& item : m_contents)
-        {
-            cout << item << " ";
-        }
-    }
+class B;
+
+class A {
 private:
-    int m_width{ 0 };
-    int m_height{ 0 };
-    int m_length{ 0 };
-    vector<string> m_contents;
+    friend class B;
+    int a{0};
+public:
+    explicit A(int val) : a(val) {}
+
+    [[nodiscard]] int quadA () const noexcept { return a * a; }
+
+    int quadAtoB (B &clasB) const noexcept;
 };
 
-Box get_Box()
-{
-    Box b(5, 10, 18); // "int,int,int"
-    b.Add_Item("Toupee");
-    b.Add_Item("Megaphone");
-    b.Add_Item("Suit");
+class B {
+private:
+    friend class A;
+    int a{0};
+public:
+    explicit B(int val) : a(val) {}
 
-    return b;
-}
+    [[nodiscard]] int quadB () const noexcept { return a * a; }
 
-int main()
-{
-    Box b; // "default"
-    Box b1(b); // "copy"
-    Box b2(get_Box()); // "move"
-    cout << "b2 contents: ";
-    b2.Print_Contents(); // Prove that we have all the values
+    [[nodiscard]] int quadBtoA (A &clasA) const noexcept { return clasA.a * a; }
+};
+
+[[nodiscard]] int A::quadAtoB(B &clasB) const noexcept { return clasB.a * a; }
+
+int main (int argc, char* argv[]) {
+
+    A objA{8};
+    B objB{7};
+
+    int ret = objB.quadBtoA (objA);
+
+    int ret1 = objA.quadAtoB (objB);
+
+    std::cout << ret << " " << ret1 << std::endl;
 
     return 0;
 }
