@@ -1,90 +1,43 @@
-#include <vector>
-#include <list>
 #include <iostream>
 
-using namespace std;
+class B;
 
-bool IsOdd(int i) { return ((i % 2) == 1); }
+class A {
+private:
+    friend class B;
+    int a{0};
+public:
+    explicit A(int val) : a(val) {}
 
-int main()
-{
-    using namespace std;
+    [[nodiscard]] int quadA () const noexcept { return a * a; }
 
-    vector<int> v,v2; // вектор
-    list<int> l, l2; // список
+    int quadAtoB (B &clasB) const noexcept;
+};
 
-    l.push_back(1); // Добавит элемент вектора в конец
-    v.push_back(1); // Добавит элемент вектора в конец
+class B {
+private:
+    friend class A;
+    int a{0};
+public:
+    explicit B(int val) : a(val) {}
 
-    l.push_front(2); // Добавить элемент в начало списка
-    v.front(); // возвращает первый элемент в векторе
+    [[nodiscard]] int quadB () const noexcept { return a * a; }
 
-    l.pop_front(); // Удалить элемент из начала списка
-    l.pop_back(); // Удалить элемент из конца списка
+    [[nodiscard]] int quadBtoA (A &clasA) const noexcept { return clasA.a * a; }
+};
 
-    v.clear(); // удаляет все элементы в векторе
-    l.clear(); // удаляет все элементы списка
+[[nodiscard]] int A::quadAtoB(B &clasB) const noexcept { return clasB.a * a; }
 
-    l.insert(l.begin(), 5, 3); // добавляет элементы 3 в количестве 5 в начало списка
-    l.insert(l.begin(), l2.begin(), l2.end()); // добавляет все элементы списка l2 в начало списка l
-    l.insert(l.cend(), {10, 20, 30}); // добавляет указанные элементы в конец списка
+int main (int argc, char* argv[]) {
 
-    v.insert(v.cbegin(), 5, 3); // добавляет элементы 3 в количестве 5 в начало вектора
-    v.insert(v.begin(), v.begin(), v2.end()); // вставляет элементы с указанной позиции
-    v.insert(v.cend(), {10, 20, 30}); // добавляет указанные элементы в конец списка
+    A objA{8};
+    B objB{7};
 
-    v.assign({9, 8, 7, 6, 5, 4, 3}); // Инициализация вектора значениями
-    v.assign(v.size(), 7); // Инициализация вектора в количестве и значениями
-    l.assign(10, 10); // Инициализация списка в количестве и значениями
+    int ret = objB.quadBtoA (objA);
 
-    v.capacity(); // Ёмкость вектора
+    int ret1 = objA.quadAtoB (objB);
 
-    l.emplace_back(5); // добавляет значение 5 в конец списка
-    v.emplace_back(5); // добавляет значение 5 в конец списка
-
-    v.emplace(v.cbegin(), 7); // вставляет элемент 7 в начало списка
-    l.emplace(l.cbegin(), 6);  // вставляет элемент 6 в начало списка
-
-    l.emplace_front(3); // добавляет значение 3 в начало списка
-
-    v.erase(v.cbegin(), v.cend()); // Удаляет элементы массива в заданном диапазоне вектора
-    l.erase(l.cbegin(), l.cend()); // Удаляет элементы массива в заданном диапазоне списка
-
-    v.data(); // указатель на первый элемент вектора
-
-    v.erase(v.cbegin()); // удалить элемент вначале вектора
-    l.erase(l.cbegin()); // удалить элемент вначале списка
-
-    l.size(); // размер списка
-    v.size(); // размер вектора
-
-    l.reverse(); // развернет список задом наперёд
-
-    v.swap(v2); // копирует содержимое одного вектора в другой
-    l.swap((l2)); // копирует содержимое одного списка в другой
-
-    v.resize(2); // меняет размер
-    l.resize(2); // меняет размер
-    l.resize(10, 4); // меняет размер списка и, если размер превышает значение, /
-    // инциализирует всё 4
-    v.resize(10, 4); // меняет размер вектора и, если размер превышает значение, /
-    // инциализирует всё 4
-
-    v.reserve(10); // Резервирует память для вектора
-
-    v.shrink_to_fit(); // режет емкость до текущего размера вектора
-
-    l.sort(); // сортирует элементы списка по возрастанию
-
-    l.merge(l2); // сливает два списка в один, сортируя элементы по возрастанию
-
-    l.remove(10); // удаляет из списка элементы, значения которых равны 10
-
-    l.remove_if(IsOdd); // удаляет элементы по условию в функции IsOdd
-
-    l.unique(); // удаляет все повторяющиеся элементы в отсортированном списке
-
-    l.splice(l.begin(), l2); // вставляет элементы списка l2 в начало списка l
+    std::cout << ret << " " << ret1 << std::endl;
 
     return 0;
 }
