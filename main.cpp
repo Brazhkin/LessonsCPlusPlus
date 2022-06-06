@@ -1,43 +1,62 @@
 #include <iostream>
+#include <utility>
+#include <vector>
 
-class B;
+#define L 100
 
-class A {
+class Data {
 private:
-    friend class B;
-    int a{0};
+    std::vector<int> v;
+    size_t size{0};
 public:
-    explicit A(int val) : a(val) {}
+    explicit Data(size_t DataSize, std::vector<int> VForData);
 
-    [[nodiscard]] int quadA () const noexcept { return a * a; }
-
-    int quadAtoB (B &clasB) const noexcept;
+    void GetData();
 };
 
-class B {
+Data::Data(size_t DataSize, std::vector<int> VForData) {
+
+    v.reserve(DataSize);
+
+    v.swap(VForData);
+}
+
+void Data::GetData() { for (auto & i : v) { std::cout << i; } }
+
+class Text : public Data {
 private:
-    friend class A;
-    int a{0};
+    size_t TextSize;
 public:
-    explicit B(int val) : a(val) {}
-
-    [[nodiscard]] int quadB () const noexcept { return a * a; }
-
-    [[nodiscard]] int quadBtoA (A &clasA) const noexcept { return clasA.a * a; }
+     explicit Text(size_t DataSize, std::vector<int> VForData, size_t SizeForText)
+    : Data(DataSize, std::move(VForData)), TextSize(SizeForText) {}
 };
 
-[[nodiscard]] int A::quadAtoB(B &clasB) const noexcept { return clasB.a * a; }
+class P : public Text {
+private:
+    char *Name;
+public:
+    explicit P(size_t DataSize, std::vector<int> VForData, size_t SizeForText, char *name) 
+            : Text(DataSize, std::move(VForData),SizeForText), Name(name) {}
+};
 
-int main (int argc, char* argv[]) {
+class S : public P {
+private:
+    bool X;
+public:
+    explicit S(size_t DataSize, std::vector<int> VForData, size_t SizeForText, char *name, bool XForS)
+            : P(DataSize, std::move(VForData),SizeForText, name), X(XForS)  {}
+};
 
-    A objA{8};
-    B objB{7};
+int main (int argc, char *argv[]) {
 
-    int ret = objB.quadBtoA (objA);
+    std::vector<int> VForData, pv2;
 
-    int ret1 = objA.quadAtoB (objB);
+    VForData.reserve(L);
+    pv2.reserve(L);
 
-    std::cout << ret << " " << ret1 << std::endl;
+    for (int i = 0; i < L; ++i) { VForData.push_back(i); }
+
+    Data D{VForData.size(), VForData};
 
     return 0;
 }
