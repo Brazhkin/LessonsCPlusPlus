@@ -34,7 +34,7 @@ class P : public Text {
 private:
     char *Name;
 public:
-    explicit P(size_t DataSize, std::vector<int> VForData, size_t SizeForText, char *name) 
+    explicit P(size_t DataSize, std::vector<int> VForData, size_t SizeForText, char *name)
             : Text(DataSize, std::move(VForData),SizeForText), Name(name) {}
 };
 
