@@ -13,6 +13,8 @@ void deadLock(CriticalData& a, CriticalData& b) {
 
     std::scoped_lock lock1(a.mut, b.mut);
 
+    cout << "Happy" << endl;
+
     cout << "Thread: " << this_thread::get_id() << " first mutex" << endl;
     this_thread::sleep_for(chrono::milliseconds(1));
     cout << " Thread: " << this_thread::get_id() << " second mutex" << endl;
